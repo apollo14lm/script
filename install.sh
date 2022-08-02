@@ -37,8 +37,11 @@ if ! command -v aws &> /dev/null; then
 fi
 
 # Step 3: CodeCommit passwordless access using IAM role
-git config --global credential.helper '!aws codecommit credential-helper $@' 
-git config --global credential.UseHttpPath true
+if [ ! -L "$HOME/.gitconfig" ] && [ ! -f "$HOME/.gitconfig" ]; then
+  echo "configuring git"
+  git config --global credential.helper '!aws codecommit credential-helper $@' 
+  git config --global credential.UseHttpPath true
+fi
 
 # Step 4: Create directory
 if [ ! -d "$HOME/codebase" ]; then
