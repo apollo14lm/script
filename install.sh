@@ -22,7 +22,7 @@ if ! command -v aws &> /dev/null; then
     FILE="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
   else
     echo "Unsupported CPU Architecture $CPU_ARCH"
-    exit 1  
+    exit 1
   fi
 
   # download file to /tmp
