@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Step 1: install unzip, if not installed
+# Step 1: install package e.g. unzip, if not installed
 if ! command -v unzip &> /dev/null; then
   echo "installing unzip"
 
@@ -8,7 +8,7 @@ if ! command -v unzip &> /dev/null; then
   sudo apt-get update -y
 
   # install packages
-  sudo apt-get install -y unzip
+  sudo apt-get install -y unzip zip
 fi
 
 # Step 2: install aws, if not installed
