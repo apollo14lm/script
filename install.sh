@@ -16,13 +16,13 @@ if ! command -v aws &> /dev/null; then
   echo "installing aws"
   CPU_ARCH=$(uname -m)
 
-  if [ ${CPU_ARCH} == 'aarch64' ]; then
+  if [ ${CPU_ARCH} == "aarch64" ]; then
     FILE="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
-  elif [ ${CPU_ARCH} == 'x86_64' ]; then
+  elif [ ${CPU_ARCH} == "x86_64" ]; then
     FILE="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
   else
     echo "Unsupported CPU Architecture $CPU_ARCH"
-    exit 1
+    exit 1  
   fi
 
   # download file to /tmp
@@ -45,6 +45,6 @@ fi
 
 # Step 4: Create directory
 if [ ! -d "$HOME/codebase" ]; then
-  mkdir -p $HOME/codebase
-  cd $HOME/codebase
+  mkdir -p "$HOME/codebase"
+  cd "$HOME/codebase"
 fi
