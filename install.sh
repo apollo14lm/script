@@ -36,15 +36,18 @@ if ! command -v aws &> /dev/null; then
   rm awscliv2.zip
 fi
 
-# Step 3: CodeCommit passwordless access using IAM role
-if [ ! -L "$HOME/.gitconfig" ] && [ ! -f "$HOME/.gitconfig" ]; then
-  echo "configuring git"
-  git config --global credential.helper '!aws codecommit credential-helper $@' 
-  git config --global credential.UseHttpPath true
-fi
+# Step 3: CodeCommit passwordless access using IAM role or AWS CLI
+GIT_URL=https://git-codecommit.us-east-2.amazonaws.com
+
+git config --global \
+credential."$GIT_URL".helper \
+'!aws codecommit credential-helper $@'
+
+git config --global \
+credential."$GIT_URL".UseHttpPath true
 
 # Step 4: Create directory
-if [ "$USER" == "ubuntu" ] && [ ! -d "$HOME/codebase" ]; then
+if [ ! -n "$CODESPACES" ] && [ ! -d "$HOME/codebase" ]; then
   mkdir -p "$HOME/codebase"
   cd "$HOME/codebase"
 fi
