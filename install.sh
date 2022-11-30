@@ -60,5 +60,5 @@ fi
 if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ]; then
   cd "$CODEBASE"
   export CODEBASE
-  git clone $GIT_URL/repos/$REPO_UD
+  git clone $GIT_URL/v1/repos/$REPO_UD
 fi
