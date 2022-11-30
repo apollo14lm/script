@@ -47,7 +47,18 @@ git config --global \
 credential."$GIT_URL".UseHttpPath true
 
 # Step 4: Create directory
-if [ ! -n "$CODESPACES" ] && [ ! -d "$HOME/codebase" ]; then
-  mkdir -p "$HOME/codebase"
-  cd "$HOME/codebase"
+if [ ! -n "$CODESPACES" ]; then
+  CODEBASE=/workspaces
+elif [ -n "$GITPOD_WORKSPACE_ID" ]; then
+  CODEBASE=/workspace
+else
+  CODEBASE=$HOME/codebase
+  mkdir -p "$CODEBASE"
+fi
+
+# Step 5: Clone the repo
+if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ]; then
+  cd "$CODEBASE"
+  export CODEBASE
+  git clone $GIT_URL/repos/$REPO_UD
 fi
