@@ -56,9 +56,14 @@ else
   mkdir -p "$CODEBASE"
 fi
 
+export CODEBASE
+
 # Step 5: Clone the repo
-if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ]; then
+if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ] && [ ! -d "$CODEBASE/$REPO_UD" ]; then
   cd "$CODEBASE"
-  export CODEBASE
   git clone $GIT_URL/v1/repos/$REPO_UD
 fi
+
+# Step 6: Install dotfile
+cd $CODEBASE/$REPO_UD/script
+source ./dotfile.sh install
