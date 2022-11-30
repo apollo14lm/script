@@ -47,7 +47,7 @@ git config --global \
 credential."$GIT_URL".UseHttpPath true
 
 # Step 4: Create directory
-if [ ! -n "$CODESPACES" ]; then
+if [ -n "$CODESPACES" ]; then
   CODEBASE=/workspaces
 elif [ -n "$GITPOD_WORKSPACE_ID" ]; then
   CODEBASE=/workspace
