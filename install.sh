@@ -3,6 +3,10 @@
 # Exit script if command fails
 set -e
 
+# Step 0: set path
+PATH="$PATH:$HOME/bin"
+export PATH
+
 # Step 1: install package e.g. unzip, if not installed
 if ! command -v unzip &> /dev/null; then
   echo "installing unzip"
@@ -37,9 +41,6 @@ if ! command -v aws &> /dev/null; then
     mkdir -p $HOME/app
     mkdir -p $HOME/bin
     sudo ./aws/install -i $HOME/app/aws-cli -b $HOME/bin
-
-    PATH="$HOME/bin:$PATH"
-    export PATH
   else
     sudo ./aws/install
   fi  
@@ -82,6 +83,8 @@ export CODEBASE
 if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ] && [ ! -d "$CODEBASE/$REPO_UD" ]; then
   cd "$CODEBASE"
   git clone $GIT_URL/v1/repos/$REPO_UD
+else
+  echo "$CODEBASE/$REPO_UD exits."
 fi
 
 # Step 6: Create .vscode link
