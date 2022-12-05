@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit script if command fails
+set -e
+
 # Step 1: install package e.g. unzip, if not installed
 if ! command -v unzip &> /dev/null; then
   echo "installing unzip"
@@ -29,8 +32,15 @@ if ! command -v aws &> /dev/null; then
   cd /tmp
   curl "$FILE" -o "awscliv2.zip"
   unzip awscliv2.zip
-  sudo ./aws/install
 
+  if [ -n "$CLOUD_SHELL" ]; then
+    mkdir -p $HOME/app
+    mkdir -p $HOME/bin
+    sudo ./aws/install -i $HOME/app/aws-cli -b $HOME/bin
+  else
+    sudo ./aws/install
+  fi  
+  
   # cleanup
   rm -rf aws
   rm awscliv2.zip
@@ -38,6 +48,11 @@ fi
 
 # Step 3: CodeCommit passwordless access using IAM role or AWS CLI
 GIT_URL=https://git-codecommit.us-east-2.amazonaws.com
+
+# backup file
+if [ -f "$HOME/.gitconfig" ] && [ ! -f "$HOME/.gitconfig_bak" ]; then
+  cp $HOME/.gitconfig $HOME/.gitconfig_bak
+fi
 
 git config --global \
 credential."$GIT_URL".helper \
@@ -51,6 +66,8 @@ if [ -n "$CODESPACES" ]; then
   CODEBASE=/workspaces
 elif [ -n "$GITPOD_WORKSPACE_ID" ]; then
   CODEBASE=/workspace
+elif [ -d "/projects" ]; then
+  CODEBASE=/projects  
 else
   CODEBASE=$HOME/codebase
   mkdir -p "$CODEBASE"
@@ -64,6 +81,14 @@ if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ] && [ ! -d "$CODEBASE/$REPO_UD" ]; the
   git clone $GIT_URL/v1/repos/$REPO_UD
 fi
 
-# Step 6: Install dotfile
+# Step 6: Create .vscode link
+if [ ! -L "$CODEBASE/.vscode" ] && [ ! -d "$CODEBASE/.vscode" ]; then
+  ln -s $CODEBASE/.vscode $CODEBASE/.vscode
+
+  cp -n $CODEBASE/.vscode/settings-template.json $CODEBASE/.vscode/settings.json
+  cp -n $CODEBASE/.vscode/extensions-template.json $CODEBASE/.vscode/extensions.json
+fi  
+
+# Step 7: Install dotfile
 cd $CODEBASE/$REPO_UD/script
 source ./dotfile.sh install
