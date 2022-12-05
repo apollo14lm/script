@@ -83,7 +83,7 @@ fi
 
 # Step 6: Create .vscode link
 if [ ! -L "$CODEBASE/.vscode" ] && [ ! -d "$CODEBASE/.vscode" ]; then
-  ln -s $CODEBASE/.vscode $CODEBASE/.vscode
+  ln -s $CODEBASE/$REPO_UD/.vscode $CODEBASE/.vscode
 
   cp -n $CODEBASE/.vscode/settings-template.json $CODEBASE/.vscode/settings.json
   cp -n $CODEBASE/.vscode/extensions-template.json $CODEBASE/.vscode/extensions.json
