@@ -37,6 +37,9 @@ if ! command -v aws &> /dev/null; then
     mkdir -p $HOME/app
     mkdir -p $HOME/bin
     sudo ./aws/install -i $HOME/app/aws-cli -b $HOME/bin
+
+    PATH="$HOME/bin:$PATH"
+    export PATH
   else
     sudo ./aws/install
   fi  
