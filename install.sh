@@ -65,7 +65,7 @@ credential."$GIT_URL".helper \
 git config --global \
 credential."$GIT_URL".UseHttpPath true
 
-# Step 4: Create directory
+# Step 4: Set CODEBASE directory
 if [ -n "$CODESPACES" ]; then
   CODEBASE=/workspaces
 elif [ -n "$GITPOD_WORKSPACE_ID" ]; then
@@ -80,11 +80,16 @@ fi
 export CODEBASE
 
 # Step 5: Clone the repo
-if [ -n "$CODEBASE" ] && [ -n "$REPO_UD" ] && [ ! -d "$CODEBASE/$REPO_UD" ]; then
+if [ ! -n "$REPO_UD" ]; then
+  echo "REPO_UD not set. Skipping repo setup"
+  exit 1
+fi
+
+if [ ! -d "$CODEBASE/$REPO_UD" ]; then
   cd "$CODEBASE"
   git clone $GIT_URL/v1/repos/$REPO_UD
 else
-  echo "$CODEBASE/$REPO_UD exits."
+  echo "Repo $CODEBASE/$REPO_UD exist"
 fi
 
 # Step 6: Create .vscode link
