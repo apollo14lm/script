@@ -92,14 +92,6 @@ else
   echo "Repo $CODEBASE/$REPO_UD exist"
 fi
 
-# Step 6: Create .vscode link
-if [ ! -L "$CODEBASE/.vscode" ] && [ ! -d "$CODEBASE/.vscode" ]; then
-  ln -s $CODEBASE/$REPO_UD/.vscode $CODEBASE/.vscode
-
-  cp -n $CODEBASE/.vscode/settings-template.json $CODEBASE/.vscode/settings.json
-  cp -n $CODEBASE/.vscode/extensions-template.json $CODEBASE/.vscode/extensions.json
-fi  
-
-# Step 7: Install dotfile
+# Step 6: Install dotfile
 cd $CODEBASE/$REPO_UD/script
 source ./dotfile.sh install
