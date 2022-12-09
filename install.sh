@@ -3,13 +3,19 @@
 # Exit script if command fails
 set -e
 
-# Step 0: set path
+log() {
+  echo "$1"
+  echo "$1" >> $HOME/install.log
+}
+
+# Step 0: set path & initialize log
 PATH="$PATH:$HOME/bin"
 export PATH
+echo "Starting install" > $HOME/install.log
 
 # Step 1: install package e.g. unzip, if not installed
 if ! command -v unzip &> /dev/null; then
-  echo "installing unzip"
+  log "installing unzip"
 
   # update the apt package index
   sudo apt-get update -y
@@ -20,7 +26,7 @@ fi
 
 # Step 2: install aws, if not installed
 if ! command -v aws &> /dev/null; then
-  echo "installing aws"
+  log "installing aws"
   CPU_ARCH=$(uname -m)
 
   if [ ${CPU_ARCH} == "aarch64" ]; then
@@ -28,7 +34,7 @@ if ! command -v aws &> /dev/null; then
   elif [ ${CPU_ARCH} == "x86_64" ]; then
     FILE="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
   else
-    echo "Unsupported CPU Architecture $CPU_ARCH"
+    log "Unsupported CPU Architecture $CPU_ARCH"
     exit 1  
   fi
 
@@ -81,7 +87,7 @@ export CODEBASE
 
 # Step 5: Clone the repo
 if [ ! -n "$REPO_UD" ]; then
-  echo "REPO_UD not set. Skipping repo setup"
+  log "REPO_UD not set. Skipping repo setup"
   exit 1
 fi
 
@@ -89,7 +95,7 @@ if [ ! -d "$CODEBASE/$REPO_UD" ]; then
   cd "$CODEBASE"
   git clone $GIT_URL/v1/repos/$REPO_UD
 else
-  echo "Repo $CODEBASE/$REPO_UD exist"
+  log "Repo $CODEBASE/$REPO_UD exist"
 fi
 
 # Step 6: Install dotfile
