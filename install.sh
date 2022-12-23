@@ -41,7 +41,7 @@ if ! command -v aws &> /dev/null; then
   # download file to /tmp
   cd /tmp
   curl "$FILE" -o "awscliv2.zip"
-  unzip awscliv2.zip
+  unzip -q awscliv2.zip
 
   if [ -n "$CLOUD_SHELL" ]; then
     mkdir -p $HOME/app
@@ -79,7 +79,7 @@ elif [ -n "$GITPOD_WORKSPACE_ID" ]; then
 elif [ -d "/projects" ]; then
   CODEBASE=/projects  
 else
-  CODEBASE=$HOME/codebase
+  CODEBASE='$HOME/codebase'
   mkdir -p "$CODEBASE"
 fi
 
