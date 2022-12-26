@@ -11,11 +11,11 @@ log() {
 # Step 0: set path & initialize log
 PATH="$PATH:$HOME/bin"
 export PATH
-echo "Starting install" > $HOME/install.log
+log "Starting install"
 
 # Step 1: install package e.g. unzip, if not installed
 if ! command -v unzip &> /dev/null; then
-  log "installing unzip"
+  log "Installing unzip"
 
   # update the apt package index
   sudo apt-get update -y
@@ -26,7 +26,7 @@ fi
 
 # Step 2: install aws, if not installed
 if ! command -v aws &> /dev/null; then
-  log "installing aws"
+  log "Installing aws"
   CPU_ARCH=$(uname -m)
 
   if [ ${CPU_ARCH} == "aarch64" ]; then
@@ -61,6 +61,7 @@ GIT_URL=https://git-codecommit.us-east-2.amazonaws.com
 
 # backup file
 if [ -f "$HOME/.gitconfig" ] && [ ! -f "$HOME/.gitconfig_bak" ]; then
+  log "Backup .gitconfig"
   cp $HOME/.gitconfig $HOME/.gitconfig_bak
 fi
 
@@ -92,6 +93,7 @@ if [ ! -n "$REPO_UD" ]; then
 fi
 
 if [ ! -d "$CODEBASE/$REPO_UD" ]; then
+  log "Cloning repo"
   cd "$CODEBASE"
   git clone $GIT_URL/v1/repos/$REPO_UD
 else
@@ -99,5 +101,6 @@ else
 fi
 
 # Step 6: Install dotfile
+log "Installing dotfile"
 cd $CODEBASE/$REPO_UD/script
 source ./dotfile.sh install
