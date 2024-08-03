@@ -40,4 +40,4 @@ jobs:
 
       - name: Build and push
         run: |
-          ./build.sh db ftr && ./build.sh db ftf
+          ./build-ci.sh
