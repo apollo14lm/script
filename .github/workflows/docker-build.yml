@@ -40,4 +40,4 @@ jobs:
 
       - name: Build and push
         run: |
-          ./build-ci.sh
+          ./build-ci.sh db
