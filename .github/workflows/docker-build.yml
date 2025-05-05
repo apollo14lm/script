@@ -9,7 +9,11 @@ on:
         required: true
         default: 'node'
       arg3:
-        default: ''             
+        default: ''
+      arg4:
+        default: ''
+      arg5:
+        default: ''
   push:
     tags:
       - '*'
@@ -39,4 +43,4 @@ jobs:
 
       - name: Build and push
         run: |
-          ./build-ci.sh ${{ inputs.arg1 }} ${{ inputs.arg2 }} ${{ inputs.arg3 }}
+          ./build-ci.sh ${{ inputs.arg1 }} ${{ inputs.arg2 }} ${{ inputs.arg3 }} ${{ inputs.arg4 }} ${{ inputs.arg5 }}
