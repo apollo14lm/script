@@ -2,7 +2,7 @@ name: Publish Docker image
 on:
   workflow_dispatch:
     inputs:
-      runner:
+      runson:
         required: true
         default: 'ubuntu-latest'    
       arg1:
@@ -25,7 +25,7 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     # runs-on: ubuntu-latest
-    runs-on: "${{ inputs.runner }}"
+    runs-on: "${{ inputs.runson }}"
     steps:
       # - name: Check out the repo
       #   uses: actions/checkout@v4
