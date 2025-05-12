@@ -57,6 +57,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push
+        env:
+          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
         run: |
           ./build-ci.sh ${{ inputs.arg1 }} ${{ inputs.arg2 }} \
           ${{ inputs.arg3 }} ${{ inputs.arg4 }} ${{ inputs.arg5 }}
