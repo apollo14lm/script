@@ -1,18 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
-# Exit script if the command fails
+# -e: Exit immediately if any command fails.
+# -u: Treat unset variables as an error.
 set -eu
 
 help() {
-  echo "Use command: tag"
-  exit 1
+  echo "Usage: $0 <command> [options]"
+  echo "Commands: src | tag"
+  exit 0
 }
 [[ $# -eq 0 ]] && help
 
-option="${1}"
+ARG1="${1}"
 
-case "$option" in
-  "tag")
+case "$ARG1" in
+  src)
+    aws s3 cp s3://${BUCKET_NAME}/${SOURCE_FILE} ./
+    unzip -qq ./${SOURCE_FILE}
+    SOURCE_DIR=${SOURCE_FILE/.zip/}
+    SOURCE_DIR=${SOURCE_FILE/.tar.gz/}
+    cd ./${SOURCE_DIR}
+    ./build.sh ${@:2}
+  ;;
+  tag)
     # UTC time
     # date=$(date '+%Y%m%d.%H%M')
     # IST time
