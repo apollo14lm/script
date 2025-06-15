@@ -18,7 +18,7 @@ case "$ARG1" in
     aws s3 cp s3://${BUCKET_NAME}/${SOURCE_FILE} ./
     unzip -qq ./${SOURCE_FILE}
     SOURCE_DIR=${SOURCE_FILE/.zip/}
-    SOURCE_DIR=${SOURCE_FILE/.tar.gz/}
+    SOURCE_DIR=${SOURCE_DIR/.tar.gz/}
     cd ./${SOURCE_DIR}
     ./build.sh ${@:2}
   ;;
