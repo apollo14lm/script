@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # -e: Exit immediately if any command fails.
 # -u: Treat unset variables as an error.
