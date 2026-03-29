@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build Flutter App
 on:
   workflow_dispatch:
     inputs:
@@ -7,10 +7,10 @@ on:
         default: 'ubuntu-latest'    
       arg1:
         required: true
-        default: 'db'
+        default: 'ci'
       arg2:
         required: true
-        default: 'node'
+        default: '0.999'
       arg3:
         default: ''
       arg4:
@@ -30,19 +30,15 @@ permissions:
   contents: read    # This is required for actions/checkout
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  build_flutter_apk:
+    name: Build Flutter APK
     # runs-on: ubuntu-latest
     runs-on: "${{ inputs.runson }}"
+    container:
+      image: apollo14lm/flutter:alpine
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-
-      # - name: Check out the repo
-      #   uses: actions/checkout@v4 
-      #   with:
-      #     repository: ${{ secrets.DH_USERNAME }}/docker-dev
-      #     token: ${{ secrets.GH_TOKEN }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -50,14 +46,11 @@ jobs:
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DH_USERNAME }}
-          password: ${{ secrets.DH_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Log in to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DH_USERNAME }}
+      #     password: ${{ secrets.DH_TOKEN }}
 
       - name: Build and push
         env:
