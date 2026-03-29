@@ -17,14 +17,14 @@ case "$ARG1" in
   src)
     # Mask bucket name in GitHub Actions logs
     if [ -n "${GITHUB_ACTIONS:-}" ]; then
-      echo "::add-mask::${BUCKET_NAME:-}"
+      echo "::add-mask::${BUCKET_PROJECT:-}"
     fi
 
-    if [[ -z "${BUCKET_NAME:-}" || -z "${SOURCE_FILE:-}" ]]; then
-      echo "Error: BUCKET_NAME and SOURCE_FILE environment variables must be set for 'src' command."
+    if [[ -z "${BUCKET_PROJECT:-}" || -z "${SOURCE_FILE:-}" ]]; then
+      echo "Error: BUCKET_PROJECT and SOURCE_FILE environment variables must be set for 'src' command."
       exit 1
     fi
-    aws s3 cp s3://${BUCKET_NAME}/${SOURCE_FILE} ./
+    aws s3 cp s3://${BUCKET_PROJECT}/build/${SOURCE_FILE} ./
     unzip -qq ./${SOURCE_FILE}
     SOURCE_DIR=${SOURCE_FILE/.zip/}
     SOURCE_DIR=${SOURCE_DIR/.tar.gz/}
