@@ -57,5 +57,8 @@ jobs:
           BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
           SOURCE_FILE: ${{ inputs.src }}
         run: |
+          # Fix git dubious ownership error for Flutter SDK
+          git config --global --add safe.directory /opt/flutter
+          
           ./build.sh src ${{ inputs.arg1 }} ${{ inputs.arg2 }} \
           ${{ inputs.arg3 }} ${{ inputs.arg4 }} ${{ inputs.arg5 }}
