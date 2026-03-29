@@ -18,6 +18,7 @@ case "$ARG1" in
     # Mask bucket name in GitHub Actions logs
     if [ -n "${GITHUB_ACTIONS:-}" ]; then
       echo "::add-mask::${BUCKET_PROJECT:-}"
+      echo "::add-mask::${BUCKET_ARTIFACT:-}"
     fi
 
     if [[ -z "${BUCKET_PROJECT:-}" || -z "${SOURCE_FILE:-}" ]]; then

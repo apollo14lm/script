@@ -61,7 +61,8 @@ jobs:
 
       - name: Build and push
         env:
-          BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+          BUCKET_PROJECT: ${{ secrets.BUCKET_PROJECT }}
+          BUCKET_ARTIFACT: ${{ secrets.BUCKET_ARTIFACT }}
           SOURCE_FILE: ${{ inputs.src }}
         run: |
           ./build.sh src ${{ inputs.arg1 }} ${{ inputs.arg2 }} \
