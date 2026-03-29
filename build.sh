@@ -15,6 +15,11 @@ ARG1="${1}"
 
 case "$ARG1" in
   src)
+    # Mask bucket name in GitHub Actions logs
+    if [ -n "${GITHUB_ACTIONS:-}" ]; then
+      echo "::add-mask::${BUCKET_NAME:-}"
+    fi
+
     if [[ -z "${BUCKET_NAME:-}" || -z "${SOURCE_FILE:-}" ]]; then
       echo "Error: BUCKET_NAME and SOURCE_FILE environment variables must be set for 'src' command."
       exit 1
