@@ -28,7 +28,12 @@ case "$ARG1" in
     aws s3 cp s3://${BUCKET_PROJECT}/build/${SOURCE_FILE} ./
     SOURCE_DIR=${SOURCE_FILE/.zip/}
     SOURCE_DIR=${SOURCE_DIR/.tar.gz/}
-    unzip -qq ./${SOURCE_FILE} -d ./${SOURCE_DIR}
+    if [[ "$SOURCE_FILE" == *.tar.gz ]]; then
+      mkdir -p ./${SOURCE_DIR}
+      tar -xzf ./${SOURCE_FILE} -C ./${SOURCE_DIR}
+    else
+      unzip -qq ./${SOURCE_FILE} -d ./${SOURCE_DIR}
+    fi
     cd ./${SOURCE_DIR}
     ./build.sh ${@:2}
   ;;
