@@ -38,13 +38,26 @@ case "$ARG1" in
     ./build.sh ${@:2}
   ;;
   tag)
-    # UTC time
-    # date=$(date '+%Y%m%d.%H%M')
-    # IST time
-    date=$(date --date='+5 hour 30 minutes' '+%Y%m%d.%H%M')
-    GIT_TAG=v${date}-lw
-    git tag ${GIT_TAG}
-    git push origin --tags
+    GIT_TAG=${2:-}
+    if [ -z "$GIT_TAG" ]; then
+      # check if the current commit already has a tag
+      EXISTING_TAG=$(git describe --tags --exact-match 2>/dev/null || true)
+      if [ -n "$EXISTING_TAG" ]; then
+        GIT_TAG=$EXISTING_TAG
+        echo "Using existing tag for current commit: $GIT_TAG"
+      else
+        # use current date and time in IST (Indian Standard Time)
+        DATE_FMT=$(TZ='Asia/Kolkata' date '+%Y%m%d.%H%M')
+
+        GIT_TAG=v${DATE_FMT}-lw
+      fi
+    fi
+
+    # Create tag if it doesn't already exist locally
+    if [ "$(git tag -l "$GIT_TAG")" != "$GIT_TAG" ]; then
+      git tag ${GIT_TAG}
+    fi
+    git push origin ${GIT_TAG}
   ;;
   *)
     help
