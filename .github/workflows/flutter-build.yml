@@ -36,7 +36,7 @@ jobs:
       image: apollo14lm/flutter:ci
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
