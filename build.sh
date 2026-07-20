@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-# -e: Exit immediately if any command fails.
-# -u: Treat unset variables as an error.
-set -eu
+# Exit script if the command fails
+set -euo pipefail
 
 help() {
   echo "Usage: $0 <command> [options]"
@@ -25,16 +24,23 @@ case "$ARG1" in
       echo "Error: BUCKET_PROJECT and SOURCE_FILE environment variables must be set for 'src' command."
       exit 1
     fi
-    aws s3 cp s3://${BUCKET_PROJECT}/build/${SOURCE_FILE} ./
+
+    export CODEBASE=${HOME}/codebase
+    mkdir -p ${CODEBASE}
+    echo "Codebase: ${CODEBASE}"
+    echo "Workspace: ${GITHUB_WORKSPACE}"
+
+    aws s3 cp s3://${BUCKET_PROJECT}/build/${SOURCE_FILE} ${CODEBASE}
     SOURCE_DIR=${SOURCE_FILE/.zip/}
     SOURCE_DIR=${SOURCE_DIR/.tar.gz/}
     if [[ "$SOURCE_FILE" == *.tar.gz ]]; then
-      mkdir -p ./${SOURCE_DIR}
-      tar -xzf ./${SOURCE_FILE} -C ./${SOURCE_DIR}
+      mkdir -p ${CODEBASE}/${SOURCE_DIR}
+      tar -xzf ${CODEBASE}/${SOURCE_FILE} -C ${CODEBASE}/${SOURCE_DIR}
     else
-      unzip -qq ./${SOURCE_FILE} -d ./${SOURCE_DIR}
+      unzip -qq ${CODEBASE}/${SOURCE_FILE} -d ${CODEBASE}/${SOURCE_DIR}
     fi
-    cd ./${SOURCE_DIR}
+
+    cd ${CODEBASE}/${SOURCE_DIR}
     ./build.sh ${@:2}
   ;;
   tag)

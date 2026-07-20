@@ -38,12 +38,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v5
 
-      # - name: Check out the repo
-      #   uses: actions/checkout@v4 
-      #   with:
-      #     repository: ${{ secrets.DH_USERNAME }}/docker-dev
-      #     token: ${{ secrets.GH_TOKEN }}
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
