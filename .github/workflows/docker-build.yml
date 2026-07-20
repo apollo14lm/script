@@ -36,7 +36,7 @@ jobs:
     runs-on: "${{ inputs.runson }}"
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # - name: Check out the repo
       #   uses: actions/checkout@v4 
@@ -45,7 +45,7 @@ jobs:
       #     token: ${{ secrets.GH_TOKEN }}
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
